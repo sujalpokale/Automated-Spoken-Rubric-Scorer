@@ -1,0 +1,6 @@
+criterion_id,criterion_name,description,keywords,weight,min_words,max_words
+C1,Clarity,"Introduce yourself clearly and concisely, giving name and background","name,background,university,company",2,20,80
+C2,Purpose,"State the purpose or objective clearly (why you are speaking)","purpose,motivation,objective,goal",1.5,10,60
+C3,Structure,"Have a logical structure: beginning, middle, end","beginning,middle,end,introduction,conclusion",1,20,100
+C4,Fluency,"Speak fluently without long pauses or many hesitations","fluent,fluency,hesitation,um,uh",1,0,9999
+C5,Engagement,"Show enthusiasm or audience awareness","enthusiastic,interest,excited,engage",0.5,5,80

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Speech Scorer</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; }
+    textarea { width: 100%; height: 160px; font-size: 14px; }
+    button { padding: 10px 16px; font-size: 16px; }
+    .card { border: 1px solid #ddd; padding: 12px; margin: 10px 0; border-radius: 6px; }
+    .score-big { font-size: 46px; font-weight: bold; color: #2c7; }
+    .crit-score { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Speech Scorer — paste transcript</h2>
+  <textarea id="transcript" placeholder="Paste transcript here...">Hi, my name is sujal. I graduated from XYZ University and I love working on machine learning. My purpose today is to apply for the research internship and learn more about practical ML.</textarea>
+  <div style="margin-top:10px;">
+    <button id="btnScore">Score My Speech</button>
+    <input type="file" id="fileInput" accept=".txt" />
+  </div>
+
+  <div id="resultArea"></div>
+
+<script>
+const API_BASE = "http://localhost:8000";
+
+document.getElementById('btnScore').addEventListener('click', async () => {
+  const text = document.getElementById('transcript').value;
+  if (!text || text.trim().length < 5) {
+    alert('Please paste some transcript text first.');
+    return;
+  }
+  document.getElementById('resultArea').innerHTML = '<div class="card">Scoring...</div>';
+  try {
+    const resp = await fetch(API_BASE + '/score', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({transcript: text})
+    });
+    const data = await resp.json();
+    renderResult(data);
+  } catch (err) {
+    document.getElementById('resultArea').innerHTML = '<div class="card">Error: ' + err.message + '</div>';
+  }
+});
+
+document.getElementById('fileInput').addEventListener('change', (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById('transcript').value = e.target.result;
+  };
+  reader.readAsText(f);
+});
+
+function renderResult(data) {
+  let html = '';
+  html += '<div class="card"><div>Overall score:</div><div class="score-big">' + data.overall_score + '</div><div>Words: ' + data.words + '</div></div>';
+  for (const c of data.criteria) {
+    html += '<div class="card">';
+    html += `<div><span class="crit-score">${c.criterion_name} — ${c.score}/100</span> (weight: ${c.weight})</div>`;
+    html += `<div>Semantic: ${c.semantic_score} | Keyword score: ${c.keyword_score} | Word score: ${c.word_count_score}</div>`;
+    html += `<div>Keywords found: ${c.keywords_found.length ? c.keywords_found.join(', ') : 'None'}</div>`;
+    html += `<div>Feedback: ${c.feedback}</div>`;
+    html += '</div>';
+  }
+  document.getElementById('resultArea').innerHTML = html;
+}
+</script>
+</body>
+</html>
