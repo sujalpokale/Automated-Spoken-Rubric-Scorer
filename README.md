@@ -32,10 +32,6 @@ Frontend: HTML, CSS, JS
 
     uvicorn backend.app:app --reload
 
-## 📄 License
 
-MIT License
-
-## 📬 Contact
 
 Sujal Pokale
