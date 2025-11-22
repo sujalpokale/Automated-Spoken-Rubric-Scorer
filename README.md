@@ -1,4 +1,4 @@
-# 🚀 SpeechScore AI
+# 🚀 Automated-Spoken-Rubric-Scorer
 
 AI-powered Transcript Scoring Tool for Spoken Communication Assessment
 
