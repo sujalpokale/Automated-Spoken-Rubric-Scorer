@@ -17,7 +17,6 @@ AI-powered Transcript Scoring Tool for Spoken Communication Assessment
 speechscore-ai/
 ├── frontend/
 ├── backend/
-├── rubric/
 ├── testing/
 └── README.md
 ```
